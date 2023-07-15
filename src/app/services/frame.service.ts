@@ -9,9 +9,7 @@ export class FrameService {
 
   constructor(private firestore: AngularFirestore) { }
 
-  addFrame(frame: any, imageUrl: string | null): Promise<any>{
-    console.log("🚀 ~ file: frame.service.ts:13 ~ FrameService ~ addFrame ~ imageUrl:", imageUrl)
-    frame.imageUrl = imageUrl;
+  addFrame(frame: any | null): Promise<any>{
     return this.firestore.collection('frames').add(frame)
   }
 
@@ -27,8 +25,7 @@ export class FrameService {
     return this.firestore.collection('frames').doc(id).snapshotChanges();
   }
 
-  updateFrame(id: string,imageUrl: string, data: any){
-    data.imageUrl = imageUrl;
+  updateFrame(id: string, data: any){
     return this.firestore.collection('frames').doc(id).update(data);
   }
 }

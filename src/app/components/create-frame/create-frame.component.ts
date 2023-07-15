@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
 import { Observable, finalize } from "rxjs";
 import { FrameService } from "src/app/services/frame.service";
-import { AngularFireStorage } from '@angular/fire/compat/storage';
+import { AngularFireStorage } from "@angular/fire/compat/storage";
 
 @Component({
   selector: "app-create-frame",
@@ -16,8 +16,8 @@ export class CreateFrameComponent implements OnInit {
   submitted = false;
   loading = false;
   id: string | null;
-  title = 'Agregar Anteojo';
-  buttonText = 'Agregar';
+  title = "Agregar Anteojo";
+  buttonText = "Agregar";
 
   imageUrl: string | null = null;
 
@@ -27,7 +27,7 @@ export class CreateFrameComponent implements OnInit {
     private router: Router,
     private toastr: ToastrService,
     private aRoute: ActivatedRoute,
-    private storage: AngularFireStorage,
+    private storage: AngularFireStorage
   ) {
     this.createFrame = this.fb.group({
       model: ["", Validators.required],
@@ -43,15 +43,15 @@ export class CreateFrameComponent implements OnInit {
     this.setFrame();
   }
 
-  addOrEditFrame(){
+  addOrEditFrame() {
     this.submitted = true;
     if (this.createFrame.invalid) {
       return;
     }
-    if(this.id === null){
+    if (this.id === null) {
       this.addFrame();
-    }else{
-      this.editFrame(this.id)
+    } else {
+      this.editFrame(this.id);
     }
   }
 
@@ -64,10 +64,12 @@ export class CreateFrameComponent implements OnInit {
       color: this.createFrame.value.color,
       createdAt: new Date(),
       updatedAt: new Date(),
+      imageUrl: this.imageUrl,
     };
+    console.log("🚀 ~ file: create-frame.component.ts:69 ~ CreateFrameComponent ~ addFrame ~ frame:", frame)
     this.loading = true;
     this.frameService
-      .addFrame(frame, this.imageUrl)
+      .addFrame(frame)
       .then(() => {
         this.toastr.success("Anteojo creado con éxito", "Anteojo Registrado");
         this.loading = true;
@@ -79,7 +81,7 @@ export class CreateFrameComponent implements OnInit {
       });
   }
 
-  editFrame(id: string){
+  editFrame(id: string) {
     const frame: any = {
       model: this.createFrame.value.model,
       gender: this.createFrame.value.gender,
@@ -87,19 +89,22 @@ export class CreateFrameComponent implements OnInit {
       style: this.createFrame.value.style,
       color: this.createFrame.value.color,
       updatedAt: new Date(),
+      imageUrl: this.imageUrl,
     };
-    this.loading =true;
-    this.frameService.updateFrame(id,frame, this.imageUrl).then(()=>{
-      this.loading =false;
-      this.toastr.info('Anteojo modificado correctamente', 'Anteojo Modificado')
+    this.loading = true;
+    this.frameService.updateFrame(id,frame).then(() => {
+      this.loading = false;
+      this.toastr.info(
+        "Anteojo modificado correctamente",
+        "Anteojo Modificado"
+      );
       this.router.navigate(["/list-frames"]);
-
-    })
+    });
   }
   setFrame() {
     if (this.id !== null) {
-      this.title = 'Editar Anteojo';
-      this.buttonText = 'Guardar';
+      this.title = "Editar Anteojo";
+      this.buttonText = "Guardar";
       this.loading = true;
       this.frameService.getFrameById(this.id).subscribe((data) => {
         this.loading = false;
@@ -116,28 +121,19 @@ export class CreateFrameComponent implements OnInit {
   }
   onFileSelected(event: any) {
     const file: File = event.target.files[0];
-
-    // Generate a unique ID for the file
     const fileId = Math.random().toString(36).substring(2);
-
-    // Create a file path in Firebase Storage
     const filePath = `frames/${fileId}`;
-
-    // Upload file to Firebase Storage
     const task = this.storage.upload(filePath, file);
-    console.log("🚀 ~ file: create-frame.component.ts:128 ~ CreateFrameComponent ~ onFileSelected ~ task:", task)
-
-    // Get notified when the upload is complete
-    task.snapshotChanges()
+    task
+      .snapshotChanges()
       .pipe(
         finalize(() => {
-          // Get the download URL of the uploaded file
-          this.storage.ref(filePath)
+          this.storage
+            .ref(filePath)
             .getDownloadURL()
             .subscribe((url: string) => {
-              // Set the image URL to display in the HTML template
               this.imageUrl = url;
-              console.log("🚀 ~ file: create-frame.component.ts:139 ~ CreateFrameComponent ~ .subscribe ~ url:", url)
+              console.log("🚀 ~ file: create-frame.component.ts:136 ~ CreateFrameComponent ~ .subscribe ~ this.imageUrl:", this.imageUrl)
             });
         })
       )
