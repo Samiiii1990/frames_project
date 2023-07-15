@@ -58,6 +58,11 @@
           </div>
         </div>
       </div>
+      <ul>
+        <li class="text" *ngFor="let item of items$ | async">
+          {{item.model}}
+        </li>
+      </ul>
     </div>
   </div>
 </div>
