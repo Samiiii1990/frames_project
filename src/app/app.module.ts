@@ -4,7 +4,11 @@ import { BrowserModule } from '@angular/platform-browser';
 //Módulos
 import { AppRoutingModule } from './app-routing.module';
 import { AngularFireModule } from '@angular/fire/compat';
-import { AngularFirestore, AngularFirestoreModule } from '@angular/fire/compat/firestore/'; 
+import { AngularFirestore} from '@angular/fire/compat/firestore/'; 
+import { ReactiveFormsModule } from '@angular/forms';
+import { ToastrModule } from 'ngx-toastr';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { AngularFireStorageModule } from '@angular/fire/compat/storage';
 
 //Componentes
 import { AppComponent } from './app.component';
@@ -29,6 +33,10 @@ import { provideFirestore,getFirestore } from '@angular/fire/firestore';
     AngularFireModule.initializeApp(environment.firebase),
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideFirestore(() => getFirestore()),
+    ReactiveFormsModule,
+    ToastrModule.forRoot(),
+    BrowserAnimationsModule,
+    AngularFireStorageModule,
   ],
   providers: [AngularFirestore],
   bootstrap: [AppComponent]

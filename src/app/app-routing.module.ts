@@ -18,6 +18,10 @@ const routes: Routes = [
     component: CreateFrameComponent,
   },
   {
+    path: "edit-frame/:id",
+    component: CreateFrameComponent,
+  },
+  {
     path: "**",
     redirectTo: "list-frames",
     pathMatch: "full",

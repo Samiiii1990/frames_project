@@ -2,67 +2,39 @@
   <div class="card">
     <div class="card-body">
       <span class="h3">Listado de Anteojos</span>
-      <button routerLink="/create-frame" class="btn btn-primary btn-lg float-end">
+      <button
+        routerLink="/create-frame"
+        class="btn btn-primary btn-lg float-end"
+      >
         Agregar
       </button>
+      <h5 *ngIf="!frames.length">No se encontraron anteojos para mostrar</h5>
+      <div *ngIf="frames.length" class="row row-cols-1 row-cols-md-3 g-4 mt-5">
+        <div *ngFor="let frame of frames" class="col">
+          <div class="card h-100">
+            <img src="..." class="card-img-top" alt="..." />
+            <img *ngIf="frame.imageUrl" [src]="frame.imageUrl" alt={{frame.model}} />
+            <div class="card-body">
+              <h5 class="card-title">{{ frame.model }}</h5>
 
-      <div class="row row-cols-1 row-cols-md-3 g-4 mt-5">
-        <div class="col">
-          <div class="card h-100">
-            <img src="..." class="card-img-top" alt="..." />
-            <div class="card-body">
-              <h5 class="card-title">Card title</h5>
-              <p class="card-text">
-                This is a wider card with supporting text below as a natural
-                lead-in to additional content. This content is a little bit
-                longer.
-              </p>
+              <span class="d-block p-2"><b>Género: </b>{{ frame.gender }}</span>
+              <span class="d-block p-2"><b>Color: </b>{{ frame.color }}</span>
+              <span class="d-block p-2"
+                ><b>Material: </b> {{ frame.material }}</span
+              >
+              <span class="d-block p-2"><b>Estilo: </b> {{ frame.style }}</span>
             </div>
             <div class="card-footer">
-              <i class="fa fa-pencil-square-o text-info mr-2" aria-hidden="true"></i>
-              <i class="fa fa-trash text-danger" aria-hidden="true"></i>
-            </div>
-          </div>
-        </div>
-        <div class="col">
-          <div class="card h-100">
-            <img src="..." class="card-img-top" alt="..." />
-            <div class="card-body">
-              <h5 class="card-title">Card title</h5>
-              <p class="card-text">
-                This card has supporting text below as a natural lead-in to
-                additional content.
-              </p>
-            </div>
-            <div class="card-footer">
-              <i class="fa fa-pencil-square-o text-info mr-2" aria-hidden="true"></i>
-              <i class="fa fa-trash text-danger" aria-hidden="true"></i>
-            </div>
-          </div>
-        </div>
-        <div class="col">
-          <div class="card h-100">
-            <img src="..." class="card-img-top" alt="..." />
-            <div class="card-body">
-              <h5 class="card-title">Card title</h5>
-              <p class="card-text">
-                This is a wider card with supporting text below as a natural
-                lead-in to additional content. This card has even longer content
-                than the first to show that equal height action.
-              </p>
-            </div>
-            <div class="card-footer">
-              <i class="fa fa-pencil-square-o text-info mr-2" aria-hidden="true"></i>
-              <i class="fa fa-trash text-danger" aria-hidden="true"></i>
+              <i
+                class="fa fa-pencil-square-o text-info mr-2"
+                aria-hidden="true"
+                [routerLink]="['/edit-frame/',frame.id]"
+              ></i>
+              <i (click)="deleteFrame(frame.id)" class="fa fa-trash text-danger" aria-hidden="true"></i>
             </div>
           </div>
         </div>
       </div>
-      <ul>
-        <li class="text" *ngFor="let item of items$ | async">
-          {{item.model}}
-        </li>
-      </ul>
     </div>
   </div>
 </div>
