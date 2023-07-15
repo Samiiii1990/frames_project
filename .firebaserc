@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "frames-7211d": {
+      "hosting": {
+        "frames_project": [
+          "frames-7211d"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "frames-7211d"
+  }
+}
