@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, ElementRef, OnInit, ViewChild } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
@@ -19,7 +19,7 @@ export class CreateFrameComponent implements OnInit {
   title = "Agregar Anteojo";
   buttonText = "Agregar";
 
-  imageUrl: string | null = null;
+  @ViewChild('fileInput') fileInput!: ElementRef;
 
   constructor(
     private fb: FormBuilder,
@@ -27,7 +27,6 @@ export class CreateFrameComponent implements OnInit {
     private router: Router,
     private toastr: ToastrService,
     private aRoute: ActivatedRoute,
-    private storage: AngularFireStorage
   ) {
     this.createFrame = this.fb.group({
       model: ["", Validators.required],
@@ -64,23 +63,21 @@ export class CreateFrameComponent implements OnInit {
       color: this.createFrame.value.color,
       createdAt: new Date(),
       updatedAt: new Date(),
-      imageUrl: this.imageUrl,
     };
-    console.log("🚀 ~ file: create-frame.component.ts:69 ~ CreateFrameComponent ~ addFrame ~ frame:", frame)
+    const imageFile: File = this.fileInput.nativeElement.files[0];
+  
     this.loading = true;
-    this.frameService
-      .addFrame(frame)
+    this.frameService.addFrame(frame, imageFile)
       .then(() => {
-        this.toastr.success("Anteojo creado con éxito", "Anteojo Registrado");
+        this.toastr.success('Anteojo creado con éxito', 'Anteojo Registrado');
         this.loading = true;
-        this.router.navigate(["/list-frames"]);
+        this.router.navigate(['/list-frames']);
       })
       .catch((error) => {
         console.log(error);
         this.loading = false;
       });
   }
-
   editFrame(id: string) {
     const frame: any = {
       model: this.createFrame.value.model,
@@ -89,7 +86,6 @@ export class CreateFrameComponent implements OnInit {
       style: this.createFrame.value.style,
       color: this.createFrame.value.color,
       updatedAt: new Date(),
-      imageUrl: this.imageUrl,
     };
     this.loading = true;
     this.frameService.updateFrame(id,frame).then(() => {
@@ -119,24 +115,5 @@ export class CreateFrameComponent implements OnInit {
       });
     }
   }
-  onFileSelected(event: any) {
-    const file: File = event.target.files[0];
-    const fileId = Math.random().toString(36).substring(2);
-    const filePath = `frames/${fileId}`;
-    const task = this.storage.upload(filePath, file);
-    task
-      .snapshotChanges()
-      .pipe(
-        finalize(() => {
-          this.storage
-            .ref(filePath)
-            .getDownloadURL()
-            .subscribe((url: string) => {
-              this.imageUrl = url;
-              console.log("🚀 ~ file: create-frame.component.ts:136 ~ CreateFrameComponent ~ .subscribe ~ this.imageUrl:", this.imageUrl)
-            });
-        })
-      )
-      .subscribe();
-  }
+
 }
