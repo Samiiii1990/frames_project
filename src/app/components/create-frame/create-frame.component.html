@@ -32,52 +32,55 @@
               aria-label=".form-select-lg example"
               formControlName="gender"
             >
-              <option selected>Género</option>
-              <option value="female">Femenino</option>
-              <option value="male">Masculino</option>
-              <option value="unisex">Unisex</option>
+              <option selected disabled>Género</option>
+              <option value="Mujer">Mujer</option>
+              <option value="Hombre">Hombre</option>
+              <option value="Unisex">Unisex</option>
             </select>
             <select
               class="form-select form-select-lg mb-3 mt-3"
               aria-label=".form-select-lg example"
               formControlName="material"
             >
-              <option selected>Material</option>
-              <option value="metal">Metal</option>
-              <option value="acetate">Acetato</option>
+              <option selected disabled>Material</option>
+              <option value="Metal">Metal</option>
+              <option value="Acetato">Acetato</option>
             </select>
             <select
               class="form-select form-select-lg mb-3 mt-3"
               aria-label=".form-select-lg example"
               formControlName="style"
             >
-              <option selected>Estilo</option>
-              <option value="aviator">Aviador</option>
-              <option value="cateye">Ojo de Gato</option>
-              <option value="square">Cuadrado</option>
-              <option value="sport">Deportivo</option>
+              <option selected disabled>Estilo</option>
+              <option value="Aviador">Aviador</option>
+              <option value="Ojo de Gato">Ojo de Gato</option>
+              <option value="Cuadrado">Cuadrado</option>
+              <option value="Deportivo">Deportivo</option>
+              <option value="Mariposa">Mariposa</option>
             </select>
             <select
               class="form-select form-select-lg mb-3 mt-3"
               aria-label=".form-select-lg example"
               formControlName="color"
             >
-              <option selected>Color</option>
-              <option value="red">Rojo</option>
-              <option value="black">Negro</option>
-              <option value="gray">Gris</option>
-              <option value="blue">Azul</option>
-              <option value="brown">Marrón</option>
-              <option value="pink">Rosa</option>
+              <option selected disabled>Color</option>
+              <option value="Rojo">Rojo</option>
+              <option value="Negro">Negro</option>
+              <option value="Gris">Gris</option>
+              <option value="Azul">Azul</option>
+              <option value="Marrón">Marrón</option>
+              <option value="Rosa">Rosa</option>
             </select>
-            <div>
+            <div class="mt-3">
               <input
                 #fileInput
                 type="file"
                 class="form-control form-control-lg mt-3"
                 id="formFileLg"
               />
+              <img *ngIf="hasImg" src={{img}} width="350px" height="300px">
             </div>
+            <label *ngIf="hasImg" #fileNameLabel></label>
             <div class="mt-3">
               <button
                 type="text"
@@ -86,7 +89,7 @@
               >
                 Volver
               </button>
-              <button type="submit" class="btn btn-primary btn-lg">
+              <button type="submit" [disabled]="loading"class="btn btn-primary btn-lg">
                 {{ buttonText }}
               </button>
             </div>

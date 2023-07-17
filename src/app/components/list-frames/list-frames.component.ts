@@ -39,7 +39,9 @@ export class ListFramesComponent implements OnInit {
     this.frameService
       .deleteFrame(id)
       .then(() => {
-        this.toastr.error('Anteojo eliminado con éxito', 'Registro Eliminado')
+        this.toastr.error("Anteojo eliminado con éxito", "Registro Eliminado", {
+          positionClass: "toast-bottom-right",
+        });
         console.log("Anteojo eliminado con éxito");
       })
       .catch((error) => {

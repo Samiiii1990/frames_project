@@ -43,7 +43,33 @@ export class FrameService {
     return this.firestore.collection('frames').doc(id).snapshotChanges();
   }
 
-  updateFrame(id: string, data: any){
-    return this.firestore.collection('frames').doc(id).update(data);
+  updateFrame(id: string, frame: any, imageFile: File | null): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+      const frameRef = this.firestore.collection('frames').doc(id);
+  
+      if (imageFile) {
+        const filePath = `frames/${imageFile.name}`;
+        const fileRef = this.storage.ref(filePath);
+        const uploadTask = this.storage.upload(filePath, imageFile);
+  
+        uploadTask.snapshotChanges().pipe(
+          finalize(() => {
+            fileRef.getDownloadURL().subscribe(
+              (imageUrl: string) => {
+                frame.imageUrl = imageUrl;
+                frameRef.update(frame)
+                  .then(() => resolve())
+                  .catch((error) => reject(error));
+              },
+              (error) => reject(error)
+            );
+          })
+        ).subscribe();
+      } else {
+        frameRef.update(frame)
+          .then(() => resolve())
+          .catch((error) => reject(error));
+      }
+    });
   }
 }

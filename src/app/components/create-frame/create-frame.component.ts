@@ -18,22 +18,25 @@ export class CreateFrameComponent implements OnInit {
   id: string | null;
   title = "Agregar Anteojo";
   buttonText = "Agregar";
+  hasImg = false;
+  img = "";
 
-  @ViewChild('fileInput') fileInput!: ElementRef;
+  @ViewChild("fileInput") fileInput!: ElementRef;
+  @ViewChild("fileNameLabel") fileNameLabel!: ElementRef;
 
   constructor(
     private fb: FormBuilder,
     private frameService: FrameService,
     private router: Router,
     private toastr: ToastrService,
-    private aRoute: ActivatedRoute,
+    private aRoute: ActivatedRoute
   ) {
     this.createFrame = this.fb.group({
       model: ["", Validators.required],
-      gender: ["", Validators.required],
-      material: ["", Validators.required],
-      style: ["", Validators.required],
-      color: ["", Validators.required],
+      gender: ["Género", Validators.required],
+      material: ["Material", Validators.required],
+      style: ["Estilo", Validators.required],
+      color: ["Color", Validators.required],
     });
     this.id = this.aRoute.snapshot.paramMap.get("id");
     console.log(this.id);
@@ -65,13 +68,16 @@ export class CreateFrameComponent implements OnInit {
       updatedAt: new Date(),
     };
     const imageFile: File = this.fileInput.nativeElement.files[0];
-  
+
     this.loading = true;
-    this.frameService.addFrame(frame, imageFile)
+    this.frameService
+      .addFrame(frame, imageFile)
       .then(() => {
-        this.toastr.success('Anteojo creado con éxito', 'Anteojo Registrado');
+        this.toastr.success("Anteojo creado con éxito", "Anteojo Registrado", {
+          positionClass: "toast-bottom-right",
+        });
         this.loading = true;
-        this.router.navigate(['/list-frames']);
+        this.router.navigate(["/list-frames"]);
       })
       .catch((error) => {
         console.log(error);
@@ -79,6 +85,7 @@ export class CreateFrameComponent implements OnInit {
       });
   }
   editFrame(id: string) {
+    this.hasImg = true;
     const frame: any = {
       model: this.createFrame.value.model,
       gender: this.createFrame.value.gender,
@@ -87,15 +94,27 @@ export class CreateFrameComponent implements OnInit {
       color: this.createFrame.value.color,
       updatedAt: new Date(),
     };
+    const imageFile: File | null =
+      this.fileInput.nativeElement.files[0] || null;
+
     this.loading = true;
-    this.frameService.updateFrame(id,frame).then(() => {
-      this.loading = false;
-      this.toastr.info(
-        "Anteojo modificado correctamente",
-        "Anteojo Modificado"
-      );
-      this.router.navigate(["/list-frames"]);
-    });
+    this.frameService
+      .updateFrame(id, frame, imageFile)
+      .then(() => {
+        this.toastr.info(
+          "Anteojo modificado correctamente",
+          "Anteojo Modificado",
+          {
+            positionClass: "toast-bottom-right",
+          }
+        );
+        this.loading = false;
+        this.router.navigate(["/list-frames"]);
+      })
+      .catch((error) => {
+        console.log(error);
+        this.loading = false;
+      });
   }
   setFrame() {
     if (this.id !== null) {
@@ -112,8 +131,14 @@ export class CreateFrameComponent implements OnInit {
           style: data.payload.data()["style"],
           color: data.payload.data()["color"],
         });
+        const imageUrl: string = data.payload.data()["imageUrl"];
+        if (imageUrl) {
+          const url = new URL(imageUrl);
+          this.img = url.toString();
+          const fileName = decodeURIComponent(url.pathname).split("/").pop();
+          this.fileNameLabel.nativeElement.textContent = fileName;
+        }
       });
     }
   }
-
 }
