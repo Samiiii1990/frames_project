@@ -37,6 +37,8 @@ export class CreateFrameComponent implements OnInit {
       material: ["Material", Validators.required],
       style: ["Estilo", Validators.required],
       color: ["Color", Validators.required],
+      price: ["Precio", Validators.required],
+      
     });
     this.id = this.aRoute.snapshot.paramMap.get("id");
     console.log(this.id);
@@ -64,6 +66,7 @@ export class CreateFrameComponent implements OnInit {
       material: this.createFrame.value.material,
       style: this.createFrame.value.style,
       color: this.createFrame.value.color,
+      price: this.createFrame.value.price,
       createdAt: new Date(),
       updatedAt: new Date(),
     };
@@ -92,6 +95,7 @@ export class CreateFrameComponent implements OnInit {
       material: this.createFrame.value.material,
       style: this.createFrame.value.style,
       color: this.createFrame.value.color,
+      price: this.createFrame.value.price,
       updatedAt: new Date(),
     };
     const imageFile: File | null =
@@ -130,6 +134,7 @@ export class CreateFrameComponent implements OnInit {
           material: data.payload.data()["material"],
           style: data.payload.data()["style"],
           color: data.payload.data()["color"],
+          price: data.payload.data()["price"],
         });
         const imageUrl: string = data.payload.data()["imageUrl"];
         if (imageUrl) {

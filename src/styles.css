@@ -11,3 +11,9 @@ font-family: 'Hind Siliguri', sans-serif;
     max-height: 250px !important;
     object-fit: cover;
 }
+.fixed-height {
+    height: 200px;
+  }
+.title-fixed-height {
+    height: 100px;
+  }

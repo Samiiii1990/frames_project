@@ -1,4 +1,4 @@
-<div class="container mt-4">
+<div class="container-fluid mt-4 px-0">
   <div class="card">
     <div class="card-body">
       <span class="h3">Listado de Anteojos</span>
@@ -10,16 +10,17 @@
       </button>
       <h5 *ngIf="!frames.length">No se encontraron anteojos para mostrar</h5>
       <div *ngIf="frames.length" class="row row-cols-1 row-cols-md-3 g-4 mt-5">
-        <div *ngFor="let frame of frames" class="col">
-          <div class="card h-100">
-            <h5 class="card-title text-center p-3">{{ frame.model }}</h5>
+        <div *ngFor="let frame of frames" class="col-12 col-md-6 col-lg-4 col-xl-3">
+          <div class="card h-100 border border-4">
             <img
               class="card-img-top"
               *ngIf="frame.imageUrl"
               [src]="frame.imageUrl"
               alt="{{ frame.model }}"
             />
-            <div class="card-body">
+            <h5 class="card-title text-center p-3">{{ frame.model }}</h5>
+            <div class="card-body fs-5">
+              <h5 class="card-title text-danger p-3 fs-4">$ {{ frame.price }}</h5>
               <span class="d-block p-2"><b>Género: </b>{{ frame.gender }}</span>
               <span class="d-block p-2"><b>Color: </b>{{ frame.color }}</span>
               <span class="d-block p-2"
@@ -36,7 +37,7 @@
                 Editar
               </button>
 
-              <button class="btn btn-primary" (click)="deleteFrame(frame.id)">
+              <button class="btn btn-primary" (click)="confirmDeleteFrame(frame.id)">
                 <i class="fa fa-trash mr-2" aria-hidden="true"></i>
                 Eliminar
               </button>
