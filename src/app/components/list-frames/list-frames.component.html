@@ -13,12 +13,12 @@
         <div *ngFor="let frame of frames | slice:(currentPage-1)*itemsPerPage:currentPage*itemsPerPage" class="col-12 col-md-6 col-lg-4 col-xl-3">
           <div class="card h-100 border border-4">
             <img
-              class="card-img-top"
+              class="card-img-top fixed-height"
               *ngIf="frame.imageUrl"
               [src]="frame.imageUrl"
               alt="{{ frame.model }}"
             />
-            <h5 class="card-title text-center p-3">{{ frame.model }}</h5>
+            <h5 class="card-title text-center p-3 title-fixed-height">{{ frame.model }}</h5>
             <div class="card-body fs-5">
               <h5 class="card-title text-danger p-3 fs-4">$ {{ frame.price }}</h5>
               <span class="d-block p-2"><b>Género: </b>{{ frame.gender }}</span>
