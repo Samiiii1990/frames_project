@@ -12,6 +12,9 @@ import Swal from 'sweetalert2';
 export class ListFramesComponent implements OnInit {
   firestore: Firestore = inject(Firestore);
   frames: any[] = [];
+  currentPage: number = 1;
+  itemsPerPage: number = 4;
+  totalItems: number = 0;
 
   constructor(
     private frameService: FrameService,
@@ -32,6 +35,7 @@ export class ListFramesComponent implements OnInit {
           ...element.payload.doc.data(),
         });
       });
+      this.totalItems = this.frames.length;
     });
     console.log(this.frames);
   }
@@ -63,5 +67,11 @@ export class ListFramesComponent implements OnInit {
       .catch((error) => {
         console.log(error);
       });
+  }
+  totalPages(): number {
+    return Math.ceil(this.totalItems / this.itemsPerPage);
+  }
+  pageNumbers(): number[] {
+    return Array.from({ length: this.totalPages() }, (_, index) => index + 1);
   }
 }
