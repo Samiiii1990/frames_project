@@ -13,7 +13,7 @@ export class ListFramesComponent implements OnInit {
   firestore: Firestore = inject(Firestore);
   frames: any[] = [];
   currentPage: number = 1;
-  itemsPerPage: number = 4;
+  itemsPerPage: number = 8;
   totalItems: number = 0;
 
   constructor(
