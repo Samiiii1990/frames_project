@@ -19,10 +19,11 @@ export class CreateFrameComponent implements OnInit {
   title = "Agregar Anteojo";
   buttonText = "Agregar";
   hasImg = false;
-  img = "";
+  img = '';
+  fileNameLabel: string | undefined = '' ;
 
   @ViewChild("fileInput") fileInput!: ElementRef;
-  @ViewChild("fileNameLabel") fileNameLabel!: ElementRef;
+
 
   constructor(
     private fb: FormBuilder,
@@ -70,7 +71,7 @@ export class CreateFrameComponent implements OnInit {
       createdAt: new Date(),
       updatedAt: new Date(),
     };
-    const imageFile: File = this.fileInput.nativeElement.files[0];
+    const imageFile: File = this.fileInput && this.fileInput.nativeElement.files[0];
 
     this.loading = true;
     this.frameService
@@ -99,7 +100,7 @@ export class CreateFrameComponent implements OnInit {
       updatedAt: new Date(),
     };
     const imageFile: File | null =
-      this.fileInput.nativeElement.files[0] || null;
+    this.fileInput ? this.fileInput.nativeElement.files[0] : null;
 
     this.loading = true;
     this.frameService
@@ -138,10 +139,12 @@ export class CreateFrameComponent implements OnInit {
         });
         const imageUrl: string = data.payload.data()["imageUrl"];
         if (imageUrl) {
+          this.hasImg = true;
           const url = new URL(imageUrl);
           this.img = url.toString();
           const fileName = decodeURIComponent(url.pathname).split("/").pop();
-          this.fileNameLabel.nativeElement.textContent = fileName;
+          console.log("🚀 ~ file: create-frame.component.ts:145 ~ CreateFrameComponent ~ this.frameService.getFrameById ~ fileName:", fileName)
+          this.fileNameLabel= fileName;
         }
       });
     }

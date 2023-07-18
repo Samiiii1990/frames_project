@@ -32,7 +32,7 @@ export class FrameService {
     });
   }
   getFrames(): Observable<any>{
-    return this.firestore.collection('frames').snapshotChanges();
+    return this.firestore.collection('frames', ref => ref.orderBy('createdAt', 'asc')).snapshotChanges();
   }
 
   deleteFrame(id: string): Promise<any>{

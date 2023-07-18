@@ -84,9 +84,9 @@
                 class="form-control form-control-lg mt-3"
                 id="formFileLg"
               />
-              <img *ngIf="hasImg" src={{img}} width="350px" height="300px">
+              <img *ngIf="hasImg" src={{img}} width="350px" height="200px">
             </div>
-            <label *ngIf="hasImg" #fileNameLabel></label>
+            <label *ngIf="hasImg">{{fileNameLabel}}</label>
             <div class="mt-3">
               <button
                 type="text"
