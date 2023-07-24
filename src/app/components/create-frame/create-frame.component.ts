@@ -2,9 +2,8 @@ import { Component, ElementRef, OnInit, ViewChild } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
-import { Observable, finalize } from "rxjs";
+import { Frame } from "src/app/models/frame";
 import { FrameService } from "src/app/services/frame.service";
-import { AngularFireStorage } from "@angular/fire/compat/storage";
 
 @Component({
   selector: "app-create-frame",
@@ -61,7 +60,7 @@ export class CreateFrameComponent implements OnInit {
   }
 
   addFrame() {
-    const frame: any = {
+    const frame: Frame = {
       model: this.createFrame.value.model,
       gender: this.createFrame.value.gender,
       material: this.createFrame.value.material,
@@ -90,7 +89,8 @@ export class CreateFrameComponent implements OnInit {
   }
   editFrame(id: string) {
     this.hasImg = true;
-    const frame: any = {
+    const frame: Frame = {
+      id,
       model: this.createFrame.value.model,
       gender: this.createFrame.value.gender,
       material: this.createFrame.value.material,
